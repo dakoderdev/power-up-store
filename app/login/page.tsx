@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { Logo } from "@/components/logo";
 import { FormularioLogin } from "./formulario-login";
+import { demoDisponible } from "./actions";
 
 export const metadata: Metadata = {
   title: "Ingresar · Power Up",
@@ -22,7 +23,9 @@ async function RedirigirSiHaySesion() {
   return null;
 }
 
-export default function Login() {
+export default async function Login() {
+  const demo = await demoDisponible();
+
   return (
     <Grilla className="min-h-screen flex-1 lg:grid-cols-[auto_1fr]">
       <Suspense fallback={null}>
@@ -45,7 +48,7 @@ export default function Login() {
               </Texto>
             </Pila>
 
-            <FormularioLogin />
+            <FormularioLogin demo={demo} />
           </Pila>
         </Fila>
 

@@ -195,6 +195,7 @@ Login y sesiones los maneja Better Auth; acá solo las reglas de negocio.
 - US-16: el sistema no puede quedar sin ningún administrador activo.
 - US-17: el primer administrador se crea con el seed o un script de inicialización.
 - US-18: las credenciales de evaluación se documentan en el README.
+- US-33: el login ofrece dos botones de modo demo, Administrador y Vendedor, que inician sesión con las cuentas de prueba sin escribir correo ni contraseña. Las credenciales salen de `DEMO_*` en el servidor; si no están definidas, los botones no aparecen.
 - US-19: el administrador puede cambiar la contraseña de otro usuario.
 - US-21: la contraseña tiene al menos 8 caracteres.
 - US-24: al crear un usuario, el administrador elige su rol: administrador u operador.
@@ -337,3 +338,4 @@ Login y sesiones los maneja Better Auth; acá solo las reglas de negocio.
 - 2026-11-17: Existencias y Categorías pasan a pestañas del módulo Productos y Saldos a pestaña del módulo Clientes (`/clientes/saldos`), y la ficha del cliente separa Datos de Cuenta corriente en pestañas, porque la consigna (sección 4) pide cinco módulos en el panel lateral y esas pestañas; el panel ya no lista Stock ni Saldos. Cada pestaña de módulo sigue siendo su propia ruta. Reemplaza `/saldos` y la parte de la decisión del 2026-11-16 que la hacía un ítem del menú.
 - 2026-11-16: los indicadores y los más vendidos del Inicio salen de `obtenerTablero`, el mismo servicio de `GET /api/tablero`, para que pantalla y API den siempre las mismas cifras; "Cuentas por cobrar" enlaza a la pantalla de saldos.
 - 2026-11-16: el stock mínimo pasa a ser un campo de cada producto (`stock_minimo`, por defecto 3), porque la consigna lo pide (RF-P1, RF-T1); reemplaza la decisión del 2026-11-08 del umbral fijo. Su regla (entero no negativo) vive en Zod y no en un check de la base, para no reconstruir la tabla.
+- 2026-11-22: el login suma los botones de modo demo (US-33) a pedido del profesor. Las credenciales demo van en variables `DEMO_*` propias y no se toman de `SEED_ADMIN_*`, para que un botón público nunca entre a una cuenta personal; el administrador principal del seed pasa a ser la cuenta pública `admin@ejemplo.com` y las cuentas de los integrantes van en `SEED_ADMIN2_*` y `SEED_ADMIN3_*`.
