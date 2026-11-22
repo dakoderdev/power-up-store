@@ -10,7 +10,7 @@ La consigna final del parcial (29/10/2026) lista shadcn/ui y Chart.js (`react-ch
 
 - **Chart.js**, con `react-chartjs-2`, ya muestra en el inicio las ventas diarias y las del mes por forma de pago (RF-T2, IN-06).
 - **shadcn/ui** se incorpora componente por componente, adaptado al diseño propio: cada pieza entra con la estructura de shadcn (`components/ui/`, `cva`, `cn` de `lib/utils.ts`, `asChild`) y tematizada con los tokens de `app/globals.css` (paleta de `DESIGN.md`) en lugar del tema por defecto. Ya están en `components/ui/` el botón, los campos de formulario, badges, tablas, estados vacío y de carga, popover, tooltip y paginación (detalle en `specs/sistema.md`, Decisiones).
-- **Rama alternativa `estilo-shadcn`:** por si hiciera falta, existe una variante con la estética por defecto de shadcn/ui (tema oscuro estándar, bordes redondeados, sin la fuente pixel; el verde se conserva como color primario). Tiene las mismas funciones que `main`; solo cambia el aspecto. No está pensada para fusionarse.
+- **Rama `estilo-custom`:** esta rama conserva la estética propia original (fuente pixel, bordes rectos, paleta de `DESIGN.md`). `main` y la versión publicada usan la estética por defecto de shadcn/ui; las funciones son las mismas.
 
 El estado de cada requerimiento está en [`specs/sistema.md`](specs/sistema.md); lo que falta está marcado `[pendiente]`.
 
