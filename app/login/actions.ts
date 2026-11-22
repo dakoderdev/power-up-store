@@ -15,6 +15,13 @@ type Credenciales = {
   clave: string;
 };
 
+type RolDemo = "admin" | "vendedor";
+
+const PREFIJOS_DEMO: Record<RolDemo, string> = {
+  admin: "DEMO_ADMIN",
+  vendedor: "DEMO_VENDEDOR",
+};
+
 function credencialesInvalidas() {
   return new ApiError(401, "CREDENCIALES_INVALIDAS", MENSAJE_INVALIDO);
 }
@@ -31,19 +38,51 @@ export async function iniciarSesion({ correo, clave }: Credenciales) {
       throw credencialesInvalidas();
     }
 
-    try {
-      await auth.api.signInEmail({
-        body: { email: correoLimpio, password: clave },
-        headers: await headers(),
-      });
-    } catch (error) {
-      if (error instanceof APIError) {
-        throw credencialesInvalidas();
-      }
+    await ingresar({ correo: correoLimpio, clave });
+  });
+}
 
-      throw error;
+async function ingresar({ correo, clave }: Credenciales) {
+  try {
+    await auth.api.signInEmail({
+      body: { email: correo, password: clave },
+      headers: await headers(),
+    });
+  } catch (error) {
+    if (error instanceof APIError) {
+      throw credencialesInvalidas();
     }
 
-    redirect("/");
+    throw error;
+  }
+
+  redirect("/");
+}
+
+function credencialesDemo(rol: RolDemo) {
+  const prefijo = PREFIJOS_DEMO[rol];
+  const correo = process.env[`${prefijo}_EMAIL`]?.trim();
+  const clave = process.env[`${prefijo}_PASSWORD`];
+
+  return correo && clave ? { correo, clave } : null;
+}
+
+export async function demoDisponible() {
+  return Boolean(credencialesDemo("admin") && credencialesDemo("vendedor"));
+}
+
+export async function entrarDemo(rol: RolDemo) {
+  return ejecutarAccion(async () => {
+    const credenciales = rol in PREFIJOS_DEMO ? credencialesDemo(rol) : null;
+
+    if (!credenciales) {
+      throw new ApiError(
+        404,
+        "NO_ENCONTRADO",
+        "El modo demo no está disponible.",
+      );
+    }
+
+    await ingresar(credenciales);
   });
 }

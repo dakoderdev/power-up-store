@@ -536,13 +536,16 @@ async function reiniciarDemostracion() {
   });
 }
 
-// RF-U3: el script crea el primer administrador, un vendedor de prueba y, si se define, un segundo administrador, con el servicio de usuarios.
+// RF-U3: el script crea el administrador y el vendedor de prueba y, si se definen, administradores adicionales, con el servicio de usuarios.
+const PREFIJOS_ADMIN_EXTRA = ["SEED_ADMIN2", "SEED_ADMIN3"] as const;
+
 async function crearUsuarioSemilla({
   prefijo,
   rol,
   nombrePorDefecto,
 }: {
-  prefijo: "SEED_ADMIN" | "SEED_ADMIN2" | "SEED_VENDEDOR";
+  prefijo:
+    "SEED_ADMIN" | (typeof PREFIJOS_ADMIN_EXTRA)[number] | "SEED_VENDEDOR";
   rol: "admin" | "operator";
   nombrePorDefecto: string;
 }): Promise<UsuarioServicio> {
@@ -1003,12 +1006,14 @@ async function sembrar() {
     nombrePorDefecto: "Vendedor",
   });
 
-  if (process.env.SEED_ADMIN2_EMAIL?.trim()) {
-    await crearUsuarioSemilla({
-      prefijo: "SEED_ADMIN2",
-      rol: "admin",
-      nombrePorDefecto: "Administrador",
-    });
+  for (const prefijo of PREFIJOS_ADMIN_EXTRA) {
+    if (process.env[`${prefijo}_EMAIL`]?.trim()) {
+      await crearUsuarioSemilla({
+        prefijo,
+        rol: "admin",
+        nombrePorDefecto: "Administrador",
+      });
+    }
   }
 
   await reiniciarDemostracion();

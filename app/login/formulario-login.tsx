@@ -4,7 +4,7 @@ import { AvisoError } from "@/components/aviso-error";
 import { useRef, useState, useTransition } from "react";
 import type { FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { iniciarSesion } from "./actions";
+import { entrarDemo, iniciarSesion } from "./actions";
 import { Input } from "@/components/ui/input";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Eye } from "pixelarticons/react/Eye.js";
@@ -62,7 +62,7 @@ function validar({ correo, clave }: { correo: string; clave: string }) {
   return errores;
 }
 
-export function FormularioLogin() {
+export function FormularioLogin({ demo }: { demo: boolean }) {
   const [correo, setCorreo] = useState("");
   const [clave, setClave] = useState("");
   const [visible, setVisible] = useState(false);
@@ -93,6 +93,18 @@ export function FormularioLogin() {
         }
       });
     }
+  }
+
+  function probarDemo(rol: "admin" | "vendedor") {
+    setErrores({});
+    setErrorGeneral("");
+    iniciar(async () => {
+      const respuesta = await entrarDemo(rol);
+
+      if (!respuesta.ok) {
+        setErrorGeneral(respuesta.error.message);
+      }
+    });
   }
 
   return (
@@ -189,6 +201,34 @@ export function FormularioLogin() {
           {pendiente ? "Ingresando…" : "Ingresar"}
         </Button>
       </div>
+
+      {demo ? (
+        <fieldset className="flex flex-col gap-3">
+          <legend className="mb-3 text-sm text-neutral-400">
+            O entrá en modo demo, sin cuenta:
+          </legend>
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              disabled={pendiente}
+              onClick={() => probarDemo("admin")}
+            >
+              Administrador
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              type="button"
+              disabled={pendiente}
+              onClick={() => probarDemo("vendedor")}
+            >
+              Vendedor
+            </Button>
+          </div>
+        </fieldset>
+      ) : null}
     </form>
   );
 }
