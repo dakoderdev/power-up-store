@@ -203,7 +203,7 @@ export function FormularioLogin({ demo }: { demo: boolean }) {
 
       {demo ? (
         <fieldset className="flex flex-col gap-3">
-          <legend className="mb-3 text-sm text-neutral-400">
+          <legend className="mb-3 text-sm text-muted-foreground">
             O entrá en modo demo, sin cuenta:
           </legend>
           <div className="grid grid-cols-2 gap-3">
