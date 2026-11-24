@@ -8,6 +8,7 @@ import { auth } from "@/lib/auth";
 import { Logo } from "@/components/logo";
 import { FormularioLogin } from "./formulario-login";
 import { demoDisponible } from "./actions";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Ingresar · Power Up",
@@ -35,6 +36,13 @@ export default async function Login() {
         as="main"
         className="bg-background px-6 py-8 sm:px-12 lg:w-[30rem] lg:pl-16 lg:pr-18 lg:py-12"
       >
+      <Card className="fixed z-100 bottom-2 right-2">
+        <CardTitle className="text-2xl">Grupo 1</CardTitle>
+        <ul className="list-disc list-inside">
+          <li className="">David Konevky</li>
+        <li className="">Maria Victoria Peralta</li>
+        </ul>
+      </Card>
         <Logo className="h-8 w-auto self-center text-foreground lg:hidden" />
 
         <Fila className="flex-1 py-16">
